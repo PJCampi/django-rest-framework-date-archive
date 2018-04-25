@@ -23,6 +23,12 @@ Install using ``pip``\ …
 
     $ pip install djangorestframework-date-archive
 
+
+Configuration
+-------------
+
+To enable date archive in your project, ``rest_framework_date_archive`` must be added to your INSTALLED_APPS.
+
 Example
 -------
 
