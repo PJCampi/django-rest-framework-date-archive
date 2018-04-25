@@ -29,9 +29,11 @@ Example
 rest_framework_date_archive provides your drf model viewsets with a read-only date archive similar to that of django.
 
 The archive can be accessed through the following urls:
-items\archive\year\
-items\archive\year\month\
-items\archive\year\month\day\
+
+.. code:: python
+    items\\archive\\year\\
+    items\\archive\\year\\month\\
+    items\\archive\\year\\month\day\\
 
 Setting things up is pretty easy:
 
