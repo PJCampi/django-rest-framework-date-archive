@@ -86,12 +86,6 @@ Install testing requirements.
 
     $ pip install -r requirements.txt
 
-Run with runtests.
-
-.. code:: bash
-
-    $ ./runtests.py
-
 You can use the excellent `tox`_ testing tool to run the tests
 against all supported versions of Python and Django. Install tox
 globally, and then simply run:
@@ -100,29 +94,6 @@ globally, and then simply run:
 
     $ tox
 
-Documentation
--------------
-
-To build the documentation, you’ll need to install ``mkdocs``.
-
-.. code:: bash
-
-    $ pip install mkdocs
-
-To preview the documentation:
-
-.. code:: bash
-
-    $ mkdocs serve
-    Running at: http://127.0.0.1:8000/
-
-To build the documentation:
-
-.. code:: bash
-
-    $ mkdocs build
-
-.. _tox: http://tox.readthedocs.org/en/latest/
 
 .. |build-status-image| image:: https://secure.travis-ci.org/PJCampi/django-rest-framework-date-archive.svg?branch=master
    :target: http://travis-ci.org/PJCampi/django-rest-framework-date-archive?branch=master
