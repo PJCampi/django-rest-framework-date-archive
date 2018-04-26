@@ -7,7 +7,6 @@ sudo: false
 
 env:
     - TOX_ENV=py36-pylint
-    - TOX_ENV=py36-docs
     - TOX_ENV=py36-django2.0-drf3.8
 
 matrix:
