@@ -39,8 +39,7 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
             raise ValueError("A month must be supplied if a day is "
                              "passed to 'get_period' method.")
         if not self.archive_field:
-            raise ImproperlyConfigured('class attribute {} must be supplied.'
-                                       ''.format(self.archive_field.__name__))
+            raise ImproperlyConfigured("class attribute 'archive_field' must be supplied.")
 
         period = self.period_list[len([arg for arg in date_args if arg]) - 1]
 
@@ -60,9 +59,17 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
         return queryset.filter(**{self.period_annotated_field: period_date})
 
     def get_earliest_period(self, period):
+        """
+        :param period: the period over which to archive (year, month or day)
+        :return: the earliest period as QuerySet
+        """
         return self.__get_earliest_or_latest(period, True)
 
     def get_latest_period(self, period):
+        """
+        :param period: the period over which to archive (year, month or day)
+        :return: the latest period as QuerySet
+        """
         return self.__get_earliest_or_latest(period, False)
 
     def __annotate_with_period(self, period):
@@ -72,6 +79,8 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
         # check if period is correct
         if period not in PERIOD_LIST:
             raise ValueError('Unknown period {}. Valid periods: {}'.format(period, PERIOD_LIST))
+        if not self.archive_field:
+            raise ImproperlyConfigured("class attribute 'archive_field' must be supplied.")
 
         # get queryset annotated with period
         if self.allow_future:
