@@ -44,13 +44,13 @@ The archive can be accessed through the following urls:
 Setting things up is pretty easy:
 
 Your model manager must include a queryset that inherit from ``DateArchiveMixin``.
-The name of the field with which the data is archived is specified by the class attribute date_field:
+The name of the field with which the data is archived is specified by the class attribute ``archive_field``:
 
 .. code:: python
 
    class BlogQueryset(DateArchiveMixin,
                       models.QuerySet):
-       date_field = 'date'
+       archive_field = 'date'
 
 
    class Blog(models.Model):

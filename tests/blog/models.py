@@ -5,7 +5,7 @@ from rest_framework_date_archive import DateArchiveMixin
 
 class BlogQueryset(DateArchiveMixin,
                    models.QuerySet):
-    date_field = 'date'
+    archive_field = 'date'
 
 
 class Blog(models.Model):

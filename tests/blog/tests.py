@@ -33,13 +33,22 @@ class TestQuerySetDate(APITestCase):
         self.assertEqual(1, Blog.objects.get_period(2018, 2, 2).count())
         self.assertEqual(0, Blog.objects.get_period(2018, 2, 3).count())
 
+        # test earliest and latest
+        self.assertEqual(1, Blog.objects.get_earliest_period('year').count())
+        self.assertEqual(3, Blog.objects.get_latest_period('year').count())
+        self.assertEqual(2, Blog.objects.get_latest_period('month').count())
+        self.assertEqual(1, Blog.objects.get_latest_period('day').count())
+
         # what if we allow future
         DateArchiveMixin.allow_future = True
         self.assertEqual(1, Blog.objects.get_period(2018, 2, 3).count())
+        self.assertEqual(3, Blog.objects.get_period(2018, 2).count())
+        self.assertEqual(3, Blog.objects.get_latest_period('month').count())
 
         # incorrect input
         with self.assertRaises(Exception):
             Blog.objects.get_period(2018, None, 1)
+
 
     @patch('rest_framework_date_archive.querysets.timezone_today')
     def test_get_urls(self, today_func):
