@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views.generic.dates import timezone_today
 
 
-__all__ = ['DateArchiveMixin']
+__all__ = ['DateArchiveMixin', 'PERIOD_LIST']
 
 
 PERIOD_LIST = ['year', 'month', 'day']
