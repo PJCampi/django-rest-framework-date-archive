@@ -8,10 +8,36 @@ from django.utils import timezone
 from django.views.generic.dates import timezone_today
 
 
-__all__ = ['DateArchiveMixin', 'PERIOD_LIST']
+__all__ = ['DateArchiveMixin', 'Period']
 
 
-PERIOD_LIST = ['year', 'month', 'day']
+class Period(object):
+    all = ['year', 'month', 'day']
+
+    @classmethod
+    def name(cls, *date_args):
+        return cls.all[len(cls.__clean_args(date_args)) - 1]
+
+    @classmethod
+    def validate(cls, period):
+        # check if period is correct
+        if period not in cls.all:
+            raise ValueError('Unknown period {}. Valid periods: {}'.format(period, cls.all))
+
+    @classmethod
+    def from_date(cls, period, date_):
+        cls.validate(period)
+        return [getattr(date_, cls.all[i]) for i in range(0, cls.all.index(period) + 1)]
+
+    @classmethod
+    def to_date(cls, *date_args):
+        date_args = cls.__clean_args(date_args)
+        date_args = list(date_args) + [1]*(len(cls.all) - len(date_args))
+        return date(**{period: val if val else 1 for period, val in zip(cls.all, date_args)})
+
+    @classmethod
+    def __clean_args(cls, args):
+        return [arg for arg in args if arg]
 
 
 class DateArchiveMixin:  # pylint: disable=too-few-public-methods
@@ -21,9 +47,8 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
     allow_future = False
     archive_field = None
     period_annotated_field = 'period'
-    period_list = PERIOD_LIST
 
-    def get_period(self, year, month=None, day=None):
+    def get_period(self, year, month=0, day=0):
         """
         :param year: the year to archive on
         :param month: the month to archive on. If none or 0, yearly archive
@@ -41,7 +66,7 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
         if not self.archive_field:
             raise ImproperlyConfigured("class attribute 'archive_field' must be supplied.")
 
-        period = self.period_list[len([arg for arg in date_args if arg]) - 1]
+        period = Period.name(*date_args)
 
         # annotate by period
         queryset = queryset.__annotate_with_period(period)  # pylint: disable=protected-access
@@ -51,8 +76,7 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
             queryset = queryset.__filter_future_dates()  # pylint: disable=protected-access
 
         # get period value: consider date vs datetime?
-        date_ = date(**{period: val if val else 1
-                        for period, val in zip(self.period_list, date_args)})
+        date_ = Period.to_date(*(arg for arg in date_args if arg))
         period_date = self.__make_date_value(date_)
 
         # return filtered value
@@ -76,9 +100,9 @@ class DateArchiveMixin:  # pylint: disable=too-few-public-methods
         return self.annotate(**{self.period_annotated_field: Trunc(self.archive_field, period)})
 
     def __get_earliest_or_latest(self, period, earliest):
-        # check if period is correct
-        if period not in PERIOD_LIST:
-            raise ValueError('Unknown period {}. Valid periods: {}'.format(period, PERIOD_LIST))
+
+        # validate data
+        Period.validate(period)
         if not self.archive_field:
             raise ImproperlyConfigured("class attribute 'archive_field' must be supplied.")
 

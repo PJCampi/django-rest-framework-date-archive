@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter, Route
 
-from .querysets import PERIOD_LIST
+from .querysets import Period
 
 
 __all__ = ['DateArchiveRouter']
@@ -15,12 +15,11 @@ class DateArchiveRouter(DefaultRouter):
     year_regex = r'[12][0-9][0-9][0-9]'
     month_regex = r'[1-9]|1[0-2]'
     day_regex = r'[1-9]|[12][0-9]|3[01]'
-    period_list = PERIOD_LIST
 
     def get_routes(self, viewset):
         # add archive routes
         archive_portion = r''
-        for period in self.period_list:
+        for period in Period.all:
             archive_portion += r'{slash}(?P<{name}>{pattern})' \
                                r''.format(name=period,
                                           pattern=getattr(self, '{}_regex'.format(period)),

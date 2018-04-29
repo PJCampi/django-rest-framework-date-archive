@@ -5,7 +5,8 @@ from rest_framework.test import APIClient, APITestCase
 
 from unittest.mock import patch
 
-from .models import Blog, DateArchiveMixin
+from rest_framework_date_archive import Period, DateArchiveMixin
+from .models import Blog
 
 
 class TestQuerySetDate(APITestCase):
@@ -49,7 +50,6 @@ class TestQuerySetDate(APITestCase):
         with self.assertRaises(Exception):
             Blog.objects.get_period(2018, None, 1)
 
-
     @patch('rest_framework_date_archive.querysets.timezone_today')
     def test_get_urls(self, today_func):
         today_func.return_value = date(2018, 2, 2)
@@ -67,3 +67,14 @@ class TestQuerySetDate(APITestCase):
         url = reverse('blog-archive-day', kwargs={'year': 2018, 'month': 2, 'day': 2})
         self.assertEqual('/tests/blogs/archive/2018/2/2/', url)
         self.assertEqual(1, len(self.client.get(url).data))
+
+
+class TestPeriod(APITestCase):
+    def test_period(self):
+        date_ = date(2018, 2, 8)
+        for i, (period, period_dte) in enumerate([('year', date(2018, 1, 1)), ('month', date(2018, 2, 1)), ('day', date(2018, 2, 8))]):
+            args = Period.from_date(period, date_)
+            self.assertEqual(i + 1, len(args))
+            self.assertEqual(period, Period.name(*args))
+            self.assertEqual(period_dte, Period.to_date(*args))
+
