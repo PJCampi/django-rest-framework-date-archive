@@ -17,3 +17,10 @@ install:
 
 script:
     - tox -e $TOX_ENV
+
+deploy:
+  provider: pypi
+  user: PJCampi
+  password:
+    secure: "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA13uvybi7vlwzFAZLsGBw e+Jgk8Fad4J9/X+hUZJtIjms6d5naxafpWXbu3Hb1hwHt07Iwy6m6qHbx1F8pa4o eUMsS7PYKWq37DFCCQMsVh2EWprFNRfDYOm+qP7JWZUZFOrCtis/wsQUfD76u9FE 0+ynvlRqVx1YNrppwwqa1OYDx+JiTz1+vOQhbFEcM55rglEIAQ85hS9PkeC7lHTJ 5cGAnKWVBUBZwP0rS5/8ctU+Y6QiYI7oXC5L8SySkPXuPSdMHCfJkYKA3JAWpUk3 yQgDNqss7gqvoh94cwkEvGZQJMQHQYawGJ/N6Yq+J1nqfKQ0w4V/QdHiUjhV2o8o WjEXxpPkhk6Cd7kEpsLVGEKOtzJPYkHHlir/MDyabEp8ocuCEnPH1uFvzPwPz90d 2fKKe1UKZuLFCCIH6vm5jiMQa1/8jVgurtQs3/OPUgnp1f7TdaJyP7gQQY7o9i8x y37T9C5EvW8A8qtRRhTvYdnMadC6iWxTioV/CHyXWJzwqMS71oYdug9dMFDLysbn P+PBRHxC5RH5S27W9NsgBbgPqLbqB5daFYVATYmmOlP0TWFo218GllqnIHOPuqXn 5rH7c8DEhwWHPLPSfCB/mJA9S/85I2aV8+OFsrdktcpaNZ4u3pqAmGljvIZ5XBZN y7XtZlbWp6Oj6DwcRl2+A/sCAwEAAQ=="
+  distributions: "sdist bdist_wheel"
