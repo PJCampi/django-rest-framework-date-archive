@@ -37,9 +37,10 @@ rest_framework_date_archive provides your drf model viewsets with a read-only da
 The archive can be accessed through the following urls:
 
 .. code:: python
-    items\\archive\\year\\
-    items\\archive\\year\\month\\
-    items\\archive\\year\\month\day\\
+
+    items\archive\year\
+    items\archive\year\month\
+    items\archive\year\month\day\
 
 Setting things up is pretty easy:
 
@@ -76,6 +77,7 @@ And you must register your urls with the ``DateArchiveRouter``:
     router = DateArchiveRouter()
     router.register('blogs', BlogViewSet)
 
+Once these few steps are performed, you have an easy way to access archived data through your REST Api. For example for blogs archives of October 2018, you can simply call: ``blogs\archive\2018\10\``.
 
 Testing
 -------
